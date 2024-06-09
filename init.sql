@@ -1,0 +1,12 @@
+-- init.sql
+CREATE DATABASE IF NOT EXISTS event;
+
+USE event;
+
+CREATE TABLE IF NOT EXISTS user (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  telephone VARCHAR(10) NOT NULL,
+  PRIMARY KEY (id)
+);

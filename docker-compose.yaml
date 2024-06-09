@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  database:
+    image: mysql:8.4
+    environment:
+      - MYSQL_DATABASE=event 
+      - MYSQL_PASSWORD=strong_password 
+      - MYSQL_ROOT_PASSWORD=strong_password
+    networks:
+      - contactAppNetwork
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data-vol:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: 
+      context: ./contact-be
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    networks:
+      - contactAppNetwork
+    depends_on:
+      - database
+    environment:
+      - HOST=database
+      - PORT=3306
+      - USER=root
+      - PASSWORD=strong_password
+      - DATABASE=event
+      - CONN_LIMIT=5
+
+  frontend:
+    restart: on-failure
+    build: 
+      context: ./contact-fe
+      dockerfile: Dockerfile
+    ports:
+      - 4173:4173
+    networks:
+      - contactAppNetwork
+    depends_on:
+      - backend
+
+networks:
+  contactAppNetwork:
+    driver: bridge
+
+volumes:
+  mysql-data-vol:
