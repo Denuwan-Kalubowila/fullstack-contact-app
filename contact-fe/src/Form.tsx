@@ -12,7 +12,7 @@ function Form() {
   const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/user', userData);
+      const response = await axios.post('https://localhost:5000/user', userData);
       console.log('Form submitted successfully:', response.data); 
       // Clear the form fields
       setUserData({
